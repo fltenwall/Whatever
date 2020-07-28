@@ -1,0 +1,140 @@
+a {
+  text-decoration: none;
+}
+.date {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+.date span {
+  font-size: 12px;
+}
+.searchDiv {
+  text-align: center;
+}
+.marginBootom,
+.searchDiv {
+  margin-bottom: 15px;
+}
+.pagination_d {
+  text-align: right;
+  margin-top: 10px;
+}
+.div_border {
+  border-bottom: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #B1D2FF;
+  margin-bottom: 15px;
+  padding-left: 5px;
+}
+.div_border .row {
+  margin-top: 10px;
+}
+.model_info_title {
+  background-color: #E6F0FE;
+}
+.model_info {
+  border: 2px;
+  border-style: solid;
+  border-color: #B1D2FF;
+  margin-top: 15px;
+  padding-bottom: 5px;
+}
+.row_border {
+  border: 2px;
+  border-style: solid;
+  border-top-style: none;
+  border-color: #B1D2FF;
+}
+.u262_img {
+  width: 60px;
+  height: 60px;
+}
+.u253_img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  right: 10px;
+  text-align: right;
+  margin-top: 10px;
+}
+.col_conent {
+  height: 40px;
+  line-height: 40px;
+}
+.content_left {
+  padding-left: 15px !important;
+}
+.show {
+  margin-left: 20px;
+}
+.show .el-button:hover {
+  background: #fff6e9;
+  border: 1px solid #fd7d3e;
+  border-radius: 2px;
+}
+.show1 {
+  display: inline-block;
+  width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.div {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.arrow_img {
+  width: 25px;
+  height: 10px;
+  position: absolute;
+  right: 0px;
+  bottom: 10px;
+}
+/* 向下角箭头 */
+.downArrow {
+  display: inline-block;
+  width: 8px;
+  /* 尺寸不超过字号的一半为宜 */
+  height: 8px;
+  border-right: 1px solid;
+  /* 画两条相邻边框 */
+  border-bottom: 1px solid;
+  transform: rotate(45deg);
+  /* 顺时针旋转45° */
+  margin-bottom: 3px;
+}
+/* 向上角箭头，原理与下箭头相同 */
+.upArrow {
+  transform: rotate(180deg);
+  margin-top: 3px;
+}
+/* 摘要背景板 */
+.hideBg {
+  padding-bottom: 0;
+  /* 方便渐变层遮挡 */
+  position: relative;
+  /* 用于子元素定位 */
+}
+/* 摘要内容 */
+.summary {
+  overflow: hidden;
+  /* 隐藏溢出内容 */
+  text-overflow: clip;
+  /* 修剪文本 */
+  display: -webkit-box;
+  /* 弹性布局 */
+  -webkit-box-orient: vertical;
+  /* 从上向下垂直排列子元素 */
+  -webkit-line-clamp: 2;
+  /* 限制文本仅显示前三行 */
+}
+.a_popover {
+  text-decoration: none;
+  font-size: 12px;
+  color: #5D5D5D;
+}

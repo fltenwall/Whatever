@@ -1,0 +1,20 @@
+/* 全局样式表 */
+
+html,
+body,
+#app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /* min-width: 1366px; */
+    /*  font-size: 14px; */
+    font-size: 62.5% !important;
+}
+
+body {
+    font-size: 2rem !important;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+    /* =20px */
+}
+  
