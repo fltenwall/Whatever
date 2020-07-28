@@ -524,19 +524,19 @@ ul > li > a {
 }
 </style>
 
-<style lang="less">
+<style lang="less" >
 @title_bgc: #e6f0fe;
 @border_c: #b1d2ff;
 .el-tabs--border-card > .el-tabs__header {
-  background-color: #ffffff !important;
+  background-color: #ffffff ;
 }
 .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
-  background-color: #e6f0fe !important;
+  background-color: #e6f0fe ;
 }
 .el-tabs--border-card {
   border: 2px solid @border_c ;
 }
 .el-tabs--border-card > .el-tabs__header {
-  border-bottom: 2px solid @border_c !important;
+  border-bottom: 2px solid @border_c ;
 }
 </style>

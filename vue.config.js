@@ -4,7 +4,7 @@ module.exports = {
         port: 8878
     },
     transpileDependencies: [
-      'vue-echarts',
-      'resize-detector'
-    ]
+        'vue-echarts',
+        'resize-detector'
+      ]
 }

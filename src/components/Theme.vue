@@ -26,21 +26,21 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
-        <el-col :span="24">
-          <el-form-item label="图片ID">
-            <el-input type="input-w" v-model="themeForm.picId"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <!--<el-row>-->
+        <!--<el-col :span="24">-->
+          <!--<el-form-item label="图片ID">-->
+            <!--<el-input type="input-w" v-model="themeForm.picId"></el-input>-->
+          <!--</el-form-item>-->
+        <!--</el-col>-->
+      <!--</el-row>-->
       <el-row>
         <el-form-item label="成员分享">
           <el-transfer
             class="el-input-t"
             filterable
             :filter-method="filterMethod"
-            filter-placeholder="请输入城市"
-            v-model="themeForm.userId"
+            filter-placeholder="请输入成员"
+            v-model="value"
             :data="data"
           ></el-transfer>
         </el-form-item>
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+const host1='http://192.168.191.3:8023'
 // 引入html2canvas
 import html2canvas from 'html2canvas'
 export default {
@@ -76,8 +77,7 @@ export default {
       themeForm: {
         file: '',
         name: '',
-        userId: '',
-        picId: ''
+        userId: ''
       },
       citiesId: ['100011', '100012', '100013', '100014', '100015', '100016', '100017'],
       rules: {
@@ -104,6 +104,7 @@ export default {
         backgroundColor: null,
         useCORS: true // 如果截图的内容里有图片,可能会有跨域的情况,加上这个参数,解决文件跨域问题
       }).then((canvas) => {
+        console.log(canvas,'=====================================');
         let url = canvas.toDataURL('image/png')
         let filename = `${new Date().getTime()}.jpg`
         this.htmlUrl = this.dataUrltoFile(url, filename)
@@ -135,9 +136,9 @@ export default {
         userIdList.push(this.citiesId[val])
       })
       formData.append('userId', userIdList.toString())
-      formData.append('picId', this.themeForm.picId)
+      // formData.append('picId', this.themeForm.picId)
       this.$ajax({
-        url: 'http://192.168.191.3:8023/upload/pic/addImage',
+        url: host1+'/upload/pic/addImage',
         method: 'post',
         data: formData
       }).then(res => {
@@ -146,7 +147,7 @@ export default {
       this.themeForm.file = ''
       this.themeForm.name = ''
       this.themeForm.userId = ''
-      this.themeForm.picId = ''
+      // this.themeForm.picId = ''
       this.$emit('flag', this.showFlag)
     },
     colseD() {
@@ -154,7 +155,7 @@ export default {
       this.themeForm.file = ''
       this.themeForm.name = ''
       this.themeForm.userId = ''
-      this.themeForm.picId = ''
+      // this.themeForm.picId = ''
       this.$emit('flag', this.showFlag)
     }
   }

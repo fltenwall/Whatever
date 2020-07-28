@@ -2,17 +2,22 @@
   <el-container class="home-container">
     <el-header style="height:58px;">
       <div>
-        <img src="../assets/u230.png" class="img-home-logo" alt />
-        <span>航天知识图谱</span>
+        <div class="img-home-logo"></div>
+        <!-- <img src="../assets/u230.png" class="img-home-logo" alt /> -->
+        <!-- <span>航天知识图谱</span> -->
       </div>
       <!-- <el-button type="info" @click="logout">退出</el-button> -->
+      <i class="el-icon-s-fold" @click="fold=!fold" ></i>
+       <div>
+      <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+    </div>
     </el-header>
     <el-container>
-      <el-aside width="180px">
+      <el-aside width="180px" :class="{asid:fold}">
         <!-- 侧边栏菜单区域 -->
         <el-menu
           class="menu"
-          active-text-color="#868686"
+          active-text-color="#2a82fe"
           unique-opened
           :collapse-transition="false"
           @select="handleSelected"
@@ -50,7 +55,7 @@
           closable
           @tab-remove="removeTab"
           @tab-click="clickTab"
-          style="width: 99.8%;height: 100%;overflow-y: hidden;"
+          style="width: 100%;height: 100%;overflow-y: hidden;"
         >
           <el-tab-pane
             v-for="(item) in editableTabs"
@@ -83,6 +88,7 @@ import HelloWorld from '@/components/HelloWorld.vue'
 export default {
   data() {
     return {
+      fold:false,
       editableTabsValue: this.$my_editableTabsValue,
       editableTabs: this.$my_tag_list,
       default_active_index: { active: '' },
@@ -116,7 +122,7 @@ export default {
           menuorigin: 'local'
         },
         {
-          index: 'morerecord',
+          index: 'Morerecord',
           title: '全息档案',
           name: 'Morerecord',
           icon: 'icon3',
@@ -339,6 +345,8 @@ export default {
 <style lang="less">
 .el-menu-item.is-active {
   background-color: #c1defc !important;
+  border-right: 4px solid #2a82fe;
+  color: #2a82fe;
 }
 .menu {
   font-family: 'Arial Normal', 'Arial';
@@ -370,22 +378,38 @@ export default {
     }
   }
 }
+.asid{
+  width: 0 !important;
+  transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
+}
+.el-icon-s-fold{
+    position: absolute;
+    left: 200px;
+    font-size: 16px;
+    cursor: pointer;
+}
 .el-aside {
+  transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
   .el-menu {
     border-right: none;
     .el-menu-item {
       color: rgba(109, 135, 167, 1);
+      height: 46px;
+      line-height: 46px;
     }
   }
-  border: 2px !important;
+  border: 1px !important;
   border-style: solid !important;
   border-color: #b1d2ff !important;
 
   //border-color: #C7CEDA !important;
 }
 .img-home-logo {
-  width: 47x;
-  height: 34px;
+  width:170px;
+  height: 30px;
+  margin-left:20px;
+  background-image: url('../assets/logo.png') ;
+  background-size: cover;
 }
 .icom {
   margin-right: 10px;
@@ -417,9 +441,9 @@ export default {
 }
 .localTabDiv {
   height: 98%;
-  width: 99.4%;
+  width: 100%;
   // padding-top: 5px;
-  padding-left: 10px;
+  // padding-left: 10px;
   /*overflow-y: auto;*/
 }
 .el-main {
@@ -437,7 +461,8 @@ export default {
   bottom: 0px;
 }
 .el-tabs--card > .el-tabs__header {
-  border-bottom: 2px solid #b1d2ff !important;
+  border-bottom: 1px solid #b1d2ff ;
+  margin: 0;
 }
 </style>
 

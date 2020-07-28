@@ -8,13 +8,18 @@ body,
     padding: 0;
     /* min-width: 1366px; */
     /*  font-size: 14px; */
-    font-size: 62.5% !important;
+    /* font-size: 62.5% !important; */
 }
 
 body {
-    font-size: 2rem !important;
-    -webkit-font-smoothing: subpixel-antialiased;
-    -moz-osx-font-smoothing: auto;
+    font-size: 14px;
+    /* font-family: Microsoft YaHei; */
+    /* font-size: 2rem !important; */
+    /* -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto; */
     /* =20px */
+}
+*{
+    font-family: "PingFang SC";
 }
   

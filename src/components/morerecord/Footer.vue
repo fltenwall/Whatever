@@ -14,7 +14,7 @@
     // import PureTable from "./components/PureTable";
     // import Graph  from "./components/Graph"
 
-    import Charts2 from "../search/Charts2";
+    import Charts2 from "./components/Charts2";
     export default {
         props:['recordData'],
         components:{

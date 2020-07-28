@@ -9,6 +9,8 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           prefix-icon="el-icon-date"
+          value-format="yyyy-MM-dd"
+          @change="getTime"
         ></el-date-picker>
 
         <el-input
@@ -46,14 +48,20 @@ export default {
     }
   },
   mounted () {
-      this.$ajax.get('http://192.168.191.3:8023/upload/pic/findPicById?userId=100013')
+     this.getImg()
+  },
+  methods: {
+    getTime(val){
+console.log(val);
+    },
+getImg(){
+  
+ this.$ajax.get('http://192.168.191.3:8023/upload/pic/findPicById?userId=100012')
         .then(res => {
           this.imageList = res.data
           console.log(res.data)
         })
-  },
-  methods: {
-
+}
   }
 }
 </script>

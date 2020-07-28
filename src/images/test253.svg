@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="19.894" viewBox="0 0 26 19.894">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-3 {
+        stroke: #2a82fe;
+      }
+
+      .cls-1 {
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        stroke-linecap: round;
+        stroke-linejoin: bevel;
+      }
+
+      .cls-3 {
+        fill: #54a4f9;
+      }
+
+      .cls-4, .cls-6 {
+        stroke: none;
+      }
+
+      .cls-5 {
+        fill: none;
+      }
+
+      .cls-6 {
+        fill: #2a82fe;
+      }
+    </style>
+  </defs>
+  <g id="组_253" data-name="组 253" transform="translate(-843 -454.106)">
+    <g id="矩形_482" data-name="矩形 482" class="cls-1" transform="translate(843 459)">
+      <rect class="cls-4" width="26" height="15"/>
+      <rect class="cls-5" x="1" y="1" width="24" height="13"/>
+    </g>
+    <g id="路径_175" data-name="路径 175" class="cls-2" transform="translate(843 454.106)">
+      <path class="cls-4" d="M 15.19288349151611 5.92627477645874 L 0.9999994039535522 5.92627477645874 L 0.9999994039535522 1.000005006790161 L 13.81206703186035 1.000005006790161 L 15.19288349151611 5.92627477645874 Z"/>
+      <path class="cls-6" d="M 1.999999046325684 1.999995231628418 L 1.999999046325684 4.926264762878418 L 13.87404441833496 4.926264762878418 L 13.0538215637207 1.999995231628418 L 1.999999046325684 1.999995231628418 M 0 -4.76837158203125e-06 L 14.57030963897705 -4.76837158203125e-06 L 16.51171875 6.926265239715576 L 0 6.926265239715576 L 0 -4.76837158203125e-06 Z"/>
+    </g>
+    <path id="路径_177" data-name="路径 177" class="cls-3" d="M863.632,465.838l-9.632-2.7-4.141,2.56Z" transform="translate(0 1)"/>
+  </g>
+</svg>

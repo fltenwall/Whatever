@@ -1,8 +1,17 @@
 <template>
   <div>
-    <Header  />
-    <Middle/>
-    <Footer v-bind:recodeData = "recordData" />
+    <div v-if="status">
+      <RecordSearch/>
+    </div>
+
+    <div v-else>
+      <Header  />
+      <Middle/>
+      <Footer v-bind:recodeData = "recordData" />
+    </div>
+
+
+
   </div>
 </template>
 
@@ -10,17 +19,19 @@
     import Header from "./Header";
     import Middle from "./Middle";
     import Footer from "./Footer";
+    import RecordSearch from "./components/RecordSearch";
 
     export default {
         components:{
           Header,
           Middle,
-          Footer
+          Footer,
+          RecordSearch
         },
         name: "Morerecord",
         data(){
-            // this.recordData = null;
             return {
+              status:true,
               recordData:{},
             }
         },

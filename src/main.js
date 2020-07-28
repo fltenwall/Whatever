@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from "@/store"
 import ECharts from 'vue-echarts'
-
 // 导入全局样式表
 import './assets/css/global.css'
 import ElementUI from 'element-ui';
@@ -15,12 +14,10 @@ import './assets/styles/iconfont.css'
 Vue.prototype.$d3 = d3;
 window.d3 = d3;
 
-Vue.component('v-chart', ECharts)
-
 Vue.use(ElementUI);
 const my_tag_list = [];
 const my_editableTabsValue = { "active-tab": '' };
-
+Vue.component('v-chart', ECharts)
 Vue.prototype.$my_tag_list = my_tag_list;
 Vue.prototype.$my_editableTabsValue = my_editableTabsValue;
 // 配置请求的跟路径

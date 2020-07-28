@@ -1,67 +1,71 @@
 <template>
   <div type="flex" justify="space-around" class="atlas">
-     <!-- <el-button @click="hidden = !hidden">Click Me</el-button> -->
-     <el-switch
+    <!-- <el-button @click="hidden = !hidden">Click Me</el-button> -->
+    <!-- <el-switch
   v-model="hidden"
   >
-</el-switch>
- <transition name="slide-fade">
-    <div class="a-left"  :class="{'a-left':hidden}">
-      <div class="row-sr a-left-tab" :class="{'b-left-tab':hidden}" >
-        <el-tabs v-model="activeName" class="tabs-scrool" @tab-click="handleClick" type="border-card" stretch>
-          <el-tab-pane label="知识检索" name="first">
-            <div class="middel">
-              <el-row class="row-sr">
-                <el-col>
-                  <el-input
-                    placeholder="输入关键字搜索"
-                    size="small"
-                    suffix-icon="el-icon-search"
-                    v-model="state"
-                    @change="changeValue"
-                  ></el-input>
-                </el-col>
-              </el-row>
+    </el-switch>-->
 
-              <el-row class="row-sr" v-for="item of listData" :key="item.name">
-                <div @click="nodeSearch(item.name)">
-                  <el-col :span="6">
-                    <img src="@/images/u262x.png" class="img_size1" />
+    <div class="tran">
+      <div class="a-left" :class="{'b-left':hidden}">
+        <div class="row-sr a-left-tab" :class="{'b-left-tab':hidden}">
+          <el-tabs v-model="activeName" class="tabs-scrool" @tab-click="handleClick" stretch>
+            <el-tab-pane label="知识检索" name="first">
+              <div class="middel">
+                <el-row class="row-sr">
+                  <el-col>
+                    <el-input
+                      placeholder="输入关键字搜索"
+                      size="small"
+                      suffix-icon="el-icon-search"
+                      v-model="state"
+                      @change="changeValue"
+                    ></el-input>
                   </el-col>
-                  <el-col :span="18">
-                    <div style="margin-bottom:5px;">{{item.entitylabel}}</div>
-                    <div style="margin-bottom:5px;">
-                      <span class="spn">主键：</span>
-                      {{item.entitykey}}
+                </el-row>
+                <div class="result">搜索结果</div>
+                <!-- 初始化搜索 -->
+                <div class="seachM" v-if="listData.length==0">暂无搜索内容</div>
+                <div class="seaShow">
+                  <div class="row-sr" v-for="item of listData" :key="item.name">
+                    <div @click="nodeSearch(item.name)">
+                      <el-col :span="6">
+                        <img src="@/images/u262x.png" class="img_size1" />
+                      </el-col>
+                      <el-col :span="18">
+                        <div style="margin-bottom:5px;">{{item.entitylabel}}</div>
+                        <div style="margin-bottom:5px;">
+                          <span class="spn">主键：</span>
+                          {{item.entitykey}}
+                        </div>
+                        <div>
+                          <span class="spn">本体：</span>
+                          {{item.entityvalue}}
+                        </div>
+                      </el-col>
                     </div>
-                    <div>
-                      <span class="spn">本体：</span>
-                      {{item.entityvalue}}
-                    </div>
-                  </el-col>
+                  </div>
                 </div>
-              </el-row>
-            </div>
+              </div>
 
-            <div class="paget" v-if="!hidden">
-              <!-- 分页区域 -->
-              <el-pagination
-                small
-                @current-change="handleCurrentChange"
-                :current-page="page.current"
-                :pager-count="5"
-                :page-size="page.pageSize"
-                layout="prev, pager, next"
-                :total="total"
-              ></el-pagination>
-            </div>
-          </el-tab-pane>
-          <!-- 关系检索========================================================== -->
-          <el-tab-pane label="图谱检索" name="second">
-            <div class="middel1">
-              <div class="top">
-
-
+              <div class="paget" v-if="!hidden">
+                <!-- 分页区域 -->
+                <el-pagination
+                  background
+                  small
+                  @current-change="handleCurrentChange"
+                  :current-page="page.current"
+                  :pager-count="5"
+                  :page-size="page.pageSize"
+                  layout="prev, pager, next"
+                  :total="total"
+                ></el-pagination>
+              </div>
+            </el-tab-pane>
+            <!-- 关系检索========================================================== -->
+            <el-tab-pane label="图谱检索" name="second">
+              <div class="middel1">
+                <div class="top">
                   <div class="title1">关系检索</div>
                   <el-input
                     style="margin-bottom:10px;"
@@ -77,44 +81,55 @@
                     v-model="relation.inputTage"
                     placeholder="请输入实体"
                   ></el-input>
-                  <el-button type="primary" icon="el-icon-search" round size="mini" @click="getShortestPath">检索</el-button>
-            </div>
-              <el-divider></el-divider>
-             <div class="top">
-               <div  class="title1">实体检索</div>
-              <el-input
-                style="margin-bottom:10px;"
-                clearable
-                size="small"
-                v-model="ent.input"
-                placeholder="请输入实体"
-              ></el-input>
+                  <el-button
+                    type="primary"
+                    icon="el-icon-search"
+                    
+                    size="mini"
+                    @click="getShortestPath"
+                  >检索</el-button>
+                </div>
+                <el-divider style="background-color:#DBECFF;"></el-divider>
+                <div class="top">
+                  <div class="title1">实体检索</div>
+                  <el-input
+                    style="margin-bottom:10px;"
+                    clearable
+                    size="small"
+                    v-model="ent.input"
+                    placeholder="请输入实体"
+                  ></el-input>
 
-              <el-button type="primary" icon="el-icon-search" round size="mini" @click="nodeSearch(ent.input)">检索</el-button>
-            </div>
-
-             </div>
-          </el-tab-pane>
-
-
-
-        </el-tabs>
+                  <el-button
+                    type="primary"
+                    icon="el-icon-search"
+                    
+                    size="mini"
+                    @click="nodeSearch(ent.input)"
+                  >检索</el-button>
+                </div>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+      </div>
+      <div class="tran-le" @click="hidden = !hidden">
+        <div class="trangle" :class="{'trangle1':hidden}"></div>
       </div>
     </div>
-</transition>
-    <div   class="a-middle">
+    <div class="a-middle" ref="d3Width">
       <el-row class="a-middle-a">
-        <el-col :span="20">
+        <el-col :span="20" style="margin-top:20px;margin-left:15px;">
           <img src="@/images/u1445.png" class="img_size" @click="backShow" />
           <img src="@/images/u1447.png" class="img_size" @click="forwardShow" />
           <img src="@/images/u1449.png" class="img_size" @click="showHistoryDialog" />
           <img src="@/images/u1451.png" class="img_size" @click="showSearchDialog" />
           <img src="@/images/u1452.png" class="img_size" @click="showThemeDialog" />
           <!-- <img src="@/images/u1453.png" class="img_size" @click="removeGraph" /> -->
-           <img id="deleteG" src="@/images/u1453.png" class="img_size"/>
-          <span id= "mag" @click="magnifyeLens">
-            <img src="@/images/fangdajing1.png" v-if="!this.magShow" class="img_size"/>
-            <img src="@/images/fangdajing2.png" v-if="this.magShow" class="img_size"/>
+          <img id="deleteG" src="@/images/u1453.png" class="img_size" />
+          <span id="mag" @click="magnifyeLens">
+            <img src="@/images/fangdajing1.png" v-if="!this.magShow" class="img_size" />
+            <img src="@/images/fangdajing2.png" v-if="this.magShow" class="img_size" />
           </span>
         </el-col>
         <!--<el-col :span="4">-->
@@ -122,16 +137,23 @@
         <!--<img src="@/images/u1024.png" class="img_size"/>-->
         <!--</el-col>-->
       </el-row>
-      <el-row>
-        <el-col>
+      <el-row >
+        <el-col >
           <div id="container" ref="tuImage"></div>
           <!--<kg-plot :loadData="this.nodeData" :wide="720"></kg-plot>-->
         </el-col>
       </el-row>
     </div>
-    <div  >
-      <el-row class="row-sr a-bottom-tab" :class="{'b-bottom-tab':hidden}">
-        <el-tabs type="border-card" stretch>
+    <div class="tran">
+      <div
+        class="tran-le"
+        @click="hiddenRight = !hiddenRight"
+        style="border:none;border-right: 1px solid #afdcfa;"
+      >
+        <div class="trangle1" :class="{'trangle2':hiddenRight}"></div>
+      </div>
+      <div class="row-sr a-bottom-tab" :class="{'b-bottom-tab':hiddenRight}">
+        <el-tabs stretch>
           <el-tab-pane label="统计">
             <div class="middel1 statis">
               <div class="statT">
@@ -220,7 +242,7 @@
             </el-table>
           </el-tab-pane>
         </el-tabs>
-      </el-row>
+      </div>
     </div>
     <!-- 搜索话框 -->
     <el-dialog title="定位搜索" :visible.sync="searchVisible" width="30%" @close="searchDialogClosed">
@@ -243,30 +265,31 @@
   </div>
 </template>
 <script>
-const host = 'http://localhost:8081'
+const host = 'http://192.168.43.228:8081'
+const host1='http://192.168.191.3:8023'
 import Theme from '../components/Theme.vue'
 // import { load } from './js/graph.js'
 import { update } from './js/update'
 // import { getGraphData } from './js/graph.js'
 // import { gethistCache } from './js/graph'
-import {pltKg} from "./js/pltkg";
-import {magLens} from "./js/pltkg";
-import {locateNode} from "./js/pltkg"
+import { pltKg } from './js/pltkg'
+import { magLens } from './js/pltkg'
+import { locateNode } from './js/pltkg'
 export default {
   components: {
     Theme
   },
   mounted() {
     this.restaurants = this.loadAll()
-
-
   },
   data() {
     return {
-      hidden:false,
+      wnode:null,
+      hidden: false,
+      hiddenRight: false,
       //实体检索input
       ent: {
-        input: '中北大学'
+        input: '推进系统'
       },
       // 关系检索input
       relation: {
@@ -308,13 +331,47 @@ export default {
       backCount: 1,
       bf: false,
       resNode: null,
-      magShow:false
+      magShow: false
     }
   },
   methods: {
+    // leftHidden(){
+    //   if(this.wnode==null){
+    //     this.hidden=!this.hidden
+    //     return
+    //   }
+    //   update()
+    //   window.sessionStorage.setItem('w',0)
+    //   this.initSvg(this.wnode)
+    //   this.hidden=!this.hidden
+     
+    //   setTimeout(() => {
+    //     var w=this.$refs.d3Width.clientWidth
+    //   window.sessionStorage.setItem('w',w)
+    //   update()
+    //   this.initSvg(this.wnode)
+    //   }, 300);
+      
+    // },
+    // rightHidden(){
+    //   if(this.wnode==null){
+    //     this.hiddenRight = !this.hiddenRight
+    //     return
+    //   }
+    //   update()
+    //   window.sessionStorage.setItem('w',0)
+    //   this.initSvg(this.wnode)
+    //    this.hiddenRight = !this.hiddenRight
+       
+    //    setTimeout(() => {
+    //     var w=this.$refs.d3Width.clientWidth
+    //   window.sessionStorage.setItem('w',w)
+    //   // update()
+    //   this.initSvg(this.wnode)
+    //   }, 300);
+    // },
     //svg启动程序
-    initSvg(data){
-
+    initSvg(data) {
       pltKg(data)
       // this.hidden=false
     },
@@ -384,7 +441,7 @@ export default {
     },
     doHistory() {
       this.$ajax
-        .get('http://localhost:8023/getHistoriesByType?type=knowledge')
+        .get(host1+'/getHistoriesByType?type=knowledge')
         .then(res => {
           let tableData = []
           res.data.data.histories.forEach((val, index, arr) => {
@@ -443,23 +500,22 @@ export default {
       this.themeVisible = true
     },
     //处理后台返回的数据
-dataCur(){
-
-},
+    dataCur() {},
     //关系检索
     async getShortestPath() {
       this.backCount = 1
       const { data } = await this.$ajax({
-        url: `http://localhost:8023/MapDisplay/getShortestPath`,
+        url: `${host1}/MapDisplay/getShortestPath`,
         params: {
           node1Name: this.relation.inputScor,
           node2Name: this.relation.inputTage
         }
       })
-      console.log(data,'关系检索=============');
+
       this.resNode = data.nodes
-       update()
-      console.log(data)
+      this.wnode=data
+      update()
+
       this.initSvg(data)
 
       // load(data, 720, false)
@@ -468,12 +524,13 @@ dataCur(){
     nodeSearch(keyword) {
       this.backCount = 1
       this.$ajax
-        .get('http://localhost:8023/MapDisplay/subGraph?nodeName=' + keyword)
+        .get(host1+'/MapDisplay/subGraph?nodeName=' + keyword)
         .then(res => {
           this.resNode = res.data.nodes
           // update()
           // load(res.data, 720, false)
-           update()
+          this.wnode=res.data
+          update()
           this.initSvg(res.data)
         })
         .catch(error => {
@@ -495,7 +552,8 @@ dataCur(){
       this.searchVisible = false
       var finded = locateNode(this.searchNode)
       if (!finded) {
-        this.$message.warning('没有找到该实体')}
+        this.$message.warning('没有找到该实体')
+      }
       this.searchNode = ''
     },
     backShow() {
@@ -522,8 +580,8 @@ dataCur(){
     shutDialog(da) {
       this.themeVisible = da
     },
-     magnifyeLens() {
-      this.magShow = ! this.magShow
+    magnifyeLens() {
+      this.magShow = !this.magShow
       console.log(this.magShow)
       let ob = this.magShow
       magLens(ob)
@@ -532,123 +590,187 @@ dataCur(){
 }
 </script>
 <style lang="less" scoped>
-/* 可以设置不同的进入和离开动画 */
-/* 设置持续时间和动画函数 */
-// .slide-fade-enter-active {
-//   transition: all .3s ease;
-// }
-// .slide-fade-leave-active {
-//   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-// }
-// .slide-fade-enter, .slide-fade-leave-to
-// /* .slide-fade-leave-active for below version 2.1.8 */ {
-//   transform: translateX(10px);
-//   opacity: 0;
-// }
 .collapse-transition {
   transition: 10s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
 }
 
-.atlas{
+.atlas {
   display: flex;
-  padding-right: 10px;
 
-  .a-left{
+  .tran {
+    display: flex;
+    .tran-le {
+      z-index: 1;
+      cursor: pointer;
+      width: 26px;
+      background-color: #eff7ff;
+      height: 100%;
+      opacity: 1;
+      border-left: 1px solid #afdcfa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .trangle {
+        width: 0;
+        height: 0;
+        border-right: 10px solid #7faafd;
+        border-left: 10px solid transparent;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+      }
+      .trangle1 {
+        width: 0;
+        height: 0;
+        border-left: 10px solid #7faafd;
+        border-right: 10px solid transparent;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+      }
+      .trangle2 {
+        width: 0;
+        height: 0;
+        border-right: 10px solid #7faafd;
+        border-left: 10px solid transparent;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+      }
+    }
+  }
 
-    // border-right:1px solid #ccc;
-    padding-right:5px;
+  .a-left {
+    box-shadow: 1px 2px 4px rgba(175, 220, 250, 1);
+
     transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
-    .a-left-tab{
+    .a-left-tab {
       width: 200px;
       transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
-      /deep/ .tabs-scrool{
-    .el-tabs__nav-wrap.is-scrollable {
-    padding: 0 ;
-    box-sizing: border-box;
-      }
-      }
+      /deep/ .tabs-scrool {
+        padding: 5px 0px;
+        .el-tabs__header {
+          margin: 0;
+          .el-tabs__nav-scroll {
+            color: #98bff5 !important;
+            .el-tabs__nav {
+              border-bottom: 1px solid #afdcfa;
 
+              .el-tabs__item {
+                padding: 0;
+                width: 100px !important;
+              }
+            }
+          }
+        }
+        .el-tabs__content {
+          padding: 13px;
+          background-color: #f9f9f9;
+        }
+
+        .el-tabs__nav-wrap.is-scrollable {
+          padding: 0;
+          box-sizing: border-box;
+        }
+      }
     }
-    .b-left-tab{
+    .b-left-tab {
       transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
       width: 0;
+    }
 
-
+    .b-left {
+      padding-right: 5px;
+      transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
+      width: 0;
     }
   }
-
-   .b-left{
-    // border:none;
-    padding-right:5px;
-    transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
-    width: 0;
+  .a-middle {
+    margin-left: 10px;
+    flex: 1;
   }
-  .a-middle{
-margin-left:10px;
-flex:1;
-  }
-  .a-bottom-tab{
+  .a-bottom-tab {
     width: 240px;
-     transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
-       
+    transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
+    /deep/ .el-tabs {
+      .el-tabs__header {
+        margin: 0;
+        .el-tabs__nav {
+          border-bottom: 1px solid #afdcfa;
+          .el-tabs__item {
+            padding: 0;
+            width: 80px !important;
+          }
+        }
+      }
+      .el-tabs__content {
+        padding: 14px;
+        background-color: #f9f9f9;
+      }
+    }
     /deep/ .el-tabs__nav-wrap.is-scrollable {
-    padding: 0 ;
-    box-sizing: border-box;
-}
-      
+      padding: 0;
+      box-sizing: border-box;
+    }
   }
-  .b-bottom-tab{
+  .b-bottom-tab {
     border: none;
     width: 0;
-     transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
+    transition: 0.3s width ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out;
+    /deep/ .el-tabs {
+      .el-tabs__content {
+        padding: 0px;
+        background-color: #f9f9f9;
+      }
+    }
   }
 }
-  @font-face {font-family: "iconfont";
-    src: url('//at.alicdn.com/t/font_1925900_6ahf9ivf635.eot?t=1594021059769'); /* IE9 */
-    src: url('//at.alicdn.com/t/font_1925900_6ahf9ivf635.eot?t=1594021059769#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('data:application/x-font-woff2;charset=utf-8;base64,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') format('woff2'),
-    url('//at.alicdn.com/t/font_1925900_6ahf9ivf635.woff?t=1594021059769') format('woff'),
-    url('//at.alicdn.com/t/font_1925900_6ahf9ivf635.ttf?t=1594021059769') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
-    url('//at.alicdn.com/t/font_1925900_6ahf9ivf635.svg?t=1594021059769#iconfont') format('svg'); /* iOS 4.1- */
-  }
+@font-face {
+  font-family: 'iconfont';
+  src: url('//at.alicdn.com/t/font_1925900_6ahf9ivf635.eot?t=1594021059769'); /* IE9 */
+  src: url('//at.alicdn.com/t/font_1925900_6ahf9ivf635.eot?t=1594021059769#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */
+      url('data:application/x-font-woff2;charset=utf-8;base64,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')
+      format('woff2'),
+    url('//at.alicdn.com/t/font_1925900_6ahf9ivf635.woff?t=1594021059769') format('woff'), url('//at.alicdn.com/t/font_1925900_6ahf9ivf635.ttf?t=1594021059769') format('truetype'),
+    /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */ url('//at.alicdn.com/t/font_1925900_6ahf9ivf635.svg?t=1594021059769#iconfont') format('svg'); /* iOS 4.1- */
+}
 
-  .iconfont {
-    font-family: "iconfont" !important;
-    font-size: 16px;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  .icon-shilaji:before {
-    content: "\e622";
-  }
+.icon-shilaji:before {
+  content: '\e622';
+}
 
-  .icon-icon-test:before {
-    content: "\e633";
-  }
+.icon-icon-test:before {
+  content: '\e633';
+}
 
-  .icon-icon-test1:before {
-    content: "\e634";
-  }
+.icon-icon-test1:before {
+  content: '\e634';
+}
 
-  .icon-icon-test2:before {
-    content: "\e63d";
-  }
+.icon-icon-test2:before {
+  content: '\e63d';
+}
 
-  .icon-icon-test3:before {
-    content: "\e63f";
-  }
+.icon-icon-test3:before {
+  content: '\e63f';
+}
 
-  .icon-icon-test4:before {
-    content: "\e641";
-  }
+.icon-icon-test4:before {
+  content: '\e641';
+}
 
-  .icon-icon-test5:before {
-    content: "\e642";
-  }
+.icon-icon-test5:before {
+  content: '\e642';
+}
 
-  h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 ul {
@@ -662,7 +784,6 @@ li {
 a {
   color: #42b983;
 }
-
 
 /deep/ .el-input__suffix {
   cursor: pointer;
@@ -678,10 +799,39 @@ a {
 }
 .middel {
   height: calc(100vh - 131px);
+  // overflow-y: auto;
 
-  overflow-y: auto;
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
+  .result {
+    padding-left: 15px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #2a82fe;
+    width: calc(100% - 15px);
+    height: 35px;
+    line-height: 35px;
+    position: absolute;
+    left: 0;
+    top: 60px;
+    border-top: 2px solid rgba(181, 212, 255, 1);
+    border-bottom: 2px solid rgba(181, 212, 255, 1);
+  }
+
+  .seachM {
+    margin-top: 60%;
+    font-size: 18px;
+    text-align: center;
+    color: rgba(164, 195, 255, 1);
+  }
+    .seaShow{
+    margin-top: 70px;
+    height: calc(100% - 100px);
+    overflow-y: auto;
   &::-webkit-scrollbar {
     display: none;
+  }
   }
 }
 .middel1 {
@@ -691,16 +841,38 @@ a {
   &::-webkit-scrollbar {
     display: none;
   }
-  .top{
+  .top {
     overflow: hidden;
-    .title1{
+    .title1 {
+      font-weight: 700;
       margin: 10px 0;
+      font-size: 16px;
+      color: #54677e;
     }
-    .el-button{
+    .el-button {
       margin-top: 5px;
       float: right;
-
     }
+    .el-button--primary {
+      color: #fff;
+      background-color: #86aefb;
+      border-color: #86aefb;
+    }
+    .el-button:focus,
+    .el-button:hover {
+      color: #fff;
+      border-color: #c6e2ff;
+      background-color: #86aefb;
+    }
+    .el-button--primary.is-active,
+    .el-button--primary:active {
+      background: #86aefb;
+      border-color: #86aefb;
+      color: #fff;
+    }
+  }
+  .el-divider {
+    background-color: #afdcfa;
   }
 }
 .statis {
@@ -714,7 +886,7 @@ a {
     .title {
       font-size: 16px;
       font-weight: 700;
-      color: #6d87a7;
+      color: #5b5b5b;
       margin-bottom: 10px;
     }
     .conent {
@@ -747,19 +919,25 @@ a {
   background-color: #fff;
 }
 .row-sr {
-
-  padding-top: 10px;
-  padding-bottom: 15px;
+  // padding-top: 10px;
+  // padding-bottom: 15px;
   border-bottom: 0.5px;
   border-bottom-style: solid #ccc;
   border-bottom-color: #797979;
-  //height: 50px;
-  // border-right: 1px;
-  // border-right-style: solid;
+}
+</style>
 
-  //   border-style: solid;
-  //   border-top: 0.5px;
-  //   border-top-style: solid;
-  //   border-top-color: #797979;
+<style lang="less" scoped>
+@title_bgc: #e6f0fe;
+@border_c: #b1d2ff;
+
+.el-tabs--border-card > .el-tabs__header {
+  background-color: #ffffff;
+}
+.el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
+  background-color: #e6f0fe !important;
+}
+.el-tabs--border-card {
+  border: 1px solid @border_c;
 }
 </style>

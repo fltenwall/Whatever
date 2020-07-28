@@ -36,7 +36,6 @@ const routes = [{
             component: () =>
                 import('@/components/search/Search.vue')
         },
-
         {
             path: '/questionsAnswers',
             component: QuestionsAnswers
@@ -79,13 +78,12 @@ const routes = [{
                 import('@/components/Preview.vue'),
 
         },
-
         {
-          path: '/morerecord',
-          name: 'Morerecord',
-          component: () =>
-            import('@/components/morerecord/Morerecord.vue')
-        },
+            path: '/morerecord',
+            name: 'Morerecord',
+            component: () =>
+              import('@/components/Morerecord/Morerecord.vue')
+          },
     ]
 },
 

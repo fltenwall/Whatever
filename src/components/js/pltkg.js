@@ -9,14 +9,12 @@ export function pltKg(datases) {
     bottom: 5,
     left: 5
   }
-  var width = 800
+  var width = window.sessionStorage.getItem('w') || 800
   var height = 600
   var colorScale = d3.scaleOrdinal() //=d3.scaleOrdinal(d3.schemeSet2)
-    .domain(d3.range(datases.nodes.label))
+    .domain(d3.range(datases.nodes.labels))
     .range(['#ff9e6d', '#86cbff', '#c2e5a0', '#fff686', '#9e79db'])
-    // var colorScale = d3.scaleOrdinal() //=d3.scaleOrdinal(d3.schemeSet2)
-//     .domain(d3.range(datases.nodes.label))
-//     .range(['#ff9e6d', '#86cbff', '#c2e5a0', '#fff686', '#9e79db','#cccccc'])
+
   window.simulation = d3.forceSimulation()
     .force("link", d3.forceLink() // This force provides links between nodes,链接力
       .id(d => d.id) // This sets the node id accessor to the specified function. If not specified, will default to the index of a node.
@@ -24,9 +22,11 @@ export function pltKg(datases) {
       .strength(1)
     )
     .force("charge", d3.forceManyBody().strength(-300)) // This adds repulsion (if it's negative) between nodes.万有引力
-    // .force("center", d3.forceCenter(width / 2, height / 2)) // This force attracts nodes to the center of the svg area,用指定的x坐标和y坐标创建一个居中力。
+    .force("center", d3.forceCenter(width / 2, height / 2)) // This force attracts nodes to the center of the svg area,用指定的x坐标和y坐标创建一个居中力。
+    // 控制力学模拟衰减率，[0-1] ,设为0则不停止 ， 默认0.0228，直到0.001
+    .alphaDecay(0.0228)
     //碰撞作用力，为节点指定一个radius区域来防止节点重叠，设置碰撞力的强度，范围[0,1], 默认为0.7。设置迭代次数，默认为1，迭代次数越多最终的布局效果越好，但是计算复杂度更高
-    .force("collide", d3.forceCollide(50).strength(0.5).iterations(2));
+    .force("collide", d3.forceCollide(60).strength(0.2).iterations(5));
   window.container = d3.select("#container")
     .append("svg")
     .attr("width", width)
@@ -39,24 +39,75 @@ export function pltKg(datases) {
   //appending little triangles, path object, as arrowhead
   //The <defs> element is used to store graphical objects that will be used at a later time
   //The <marker> element defines the graphic that is to be used for drawing arrowheads or polymarkers on a given <path>, <line>, <polyline> or <polygon> element.
-  svg.append('defs').append('marker')
+  var defs = svg.append('defs')
+
+  // var marker=defs
+  //   .append("marker")
+  //   .attr('id', "marker")
+  //   .attr("markerWidth", 20)    //marker视窗的宽
+  //   .attr("markerHeight", 20)   //marker视窗的高
+  //   .attr("refX", 35)            //refX和refY，指的是图形元素和marker连接的位置坐标
+  //   .attr("refY", 0)
+  //   .attr("orient", "auto")     //orient="auto"设置箭头的方向为自动适应线条的方向
+  //   .attr("markerUnits", "userSpaceOnUse")  //marker是否进行缩放 ,默认值是strokeWidth,会缩放
+  //   .append("path")
+  //   .attr("d", "M 0 0 8 4 0 8Z")    //箭头的路径 从 （0,0） 到 （8,4） 到（0,8）
+  //   .attr("fill", "steelblue");
+
+  defs.append('marker')
     .attr("id", 'arrowhead')
     .attr('viewBox', '-0 -5 10 10') //the bound of the SVG viewport for the current SVG fragment. defines a coordinate system 10 wide and 10 high starting on (0,-5)
-    .attr('refX', 23) // x coordinate for the reference point of the marker. If circle is bigger, this need to be bigger.
+    .attr('refX', 33) // x coordinate for the reference point of the marker. If circle is bigger, this need to be bigger.
     .attr('refY', 0)
     .attr('orient', 'auto')
-    .attr('markerWidth', 13)
-    .attr('markerHeight', 13)
-    .attr('xoverflow', 'visible')
+    .attr('markerWidth', 6)
+    .attr('markerHeight', 6)
+    // .attr('xoverflow', 'visible')
     .append('svg:path')
+    .attr("markerUnits", "userSpaceOnUse")
     .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
     .attr('fill', '#999')
-    .style('stroke', 'none');
+    .style('stroke', 'none')
+    .attr("fill", "steelblue");
+
+  // 3.2 添加多个头像图片的 <pattern>
+  var patterns = defs
+    .selectAll("pattern.patternclass")
+    .data(datases.nodes)
+    .enter()
+    .append("pattern")
+    .attr("class", "patternclass")
+    .attr("id", function (d, index) {
+      return 'image' + d.id;
+    })
+    // 两个取值userSpaceOnUse  objectBoundingBox
+    .attr('patternUnits', 'objectBoundingBox')
+    // <pattern>，x、y值的改变决定图案的位置，宽度、高度默认为pattern图案占填充图形的百分比。
+    .attr("x", "0")
+    .attr("y", "0")
+    .attr("width", "1")
+    .attr("height", "1");
+
+  // 3.3 向<defs> - <pattern>添加 头像
+  patterns.append("image")
+    .attr("class", "circle")
+    .attr("xlink:href", function (d) {
+      return require("@/images/"+92 + ".png"); // 修改节点头像
+    })
+    .attr("src", function (d) {
+      console.log(d)
+      return require("@/images/"+92 + ".png"); // 修改节点头像
+    })
+    // .attr("background-image", 'url(../)')
+    .attr("height", 30*2)
+    .attr("width", 30*2)
+    .attr("preserveAspectRatio", "xMidYMin slice");
 
   container.call(d3.zoom() // 自动创建事件侦听器
     .scaleExtent([0.1, 10]) // 缩放允许的级数
     .on("zoom", zoom)
   )
+    .on("dblclick.zoom", null);
 
   function zoom() {
     svg.attr("transform", d3.event.transform);
@@ -119,6 +170,8 @@ export function pltKg(datases) {
   var adjlist = [];
 
   dataset.links.forEach(function (d) {
+    console.log("++++++++++")
+    console.log(d)
     adjlist[d.source + "-" + d.target] = true;
     adjlist[d.target + "-" + d.source] = true;
   });
@@ -134,7 +187,14 @@ export function pltKg(datases) {
     .append("line")
     .attr("class", "links")
     .attr("stroke", "#aaa")
+    .style("stroke-width", 2)
     .attr('marker-end', 'url(#arrowhead)') //The marker-end attribute defines the arrowhead or polymarker that will be drawn at the final vertex of the given shape.
+    .on('mouseover', function () {
+      d3.select(this).selectAll('.links').style('stroke-width', 4);
+    })
+    .on('mouseout', function () {
+      d3.select(this).selectAll('.links').style('stroke-width', 2);
+    })
 
 
   //The <title> element provides an accessible, short-text description of any SVG container element or graphics element.
@@ -179,7 +239,7 @@ export function pltKg(datases) {
     // })
     .style("pointer-events", "none")
     .attr("startOffset", "50%")
-    .text(d => d.type);
+    .text(d => d.name);
 
   window.node = svg.selectAll(".nodes")
     .data(dataset.nodes)
@@ -189,27 +249,54 @@ export function pltKg(datases) {
     .call(d3.drag() //sets the event listener for the specified typenames and returns the drag behavior.
       .on("start", dragstarted) //start - after a new pointer becomes active (on mousedown or touchstart).
       .on("drag", dragged)      //drag - after an active pointer moves (on mousemove or touchmove).
-      //.on("end", dragended)     //end - after an active pointer becomes inactive (on mouseup, touchend or touchcancel).
+      .on("end", dragended)     //end - after an active pointer becomes inactive (on mouseup, touchend or touchcancel).
     );
   //圆环边线颜色
   window.nodeCicles = node.append("circle")
-    .attr("r", d => 20)//+ d.runtime/20 )
+    .attr("r", d => 30)//+ d.runtime/20 )
       //这居然这么关键？+++++++++++++++
     // .attr("cx", function (d) { return d.x; })
     // .attr("cy", function (d) { return d.y; })
-    .style("stroke", "grey")
-    .style("stroke-opacity", 0.3)
-    .style("stroke-width", d => 3)  //.style("stroke-width", d => d.runtime / 10)
-    .style("fill", d => colorScale(d.label))
+    .style("stroke", d => colorScale(d.labels))
+    // .style("stroke-opacity", 0.3)
+    .style("stroke-width", d => 5)  //.style("stroke-width", d => d.runtime / 10)
+    .style("fill", function (d) {
+      return ("url(#image" + d.id+ ")");})
+    .on("mouseover", function (d) {
+      d3.select(this).style('stroke-width', 8);
+    })
+    .on("mouseout",function (d) {
+      d3.select(this).style('stroke-width', 3);
+    })
   //球悬浮title
   node.append("title")
-    .text(d => d.id + ": " + " - " + d.label + ", runtime:" + '30' + "min");
-
-  window.nodeText = node.append("text")
-    .attr("dy", 5)
-    .attr("dx", 25)
     .text(d => d.name);
 
+  window.nodeText = node.append('text')
+    .attr("dy", 5)
+    .attr("x", 35)
+    // .text(d => d.name.length > 6 ? d.name.slice(0,5)+"..." : d.name)
+  let strs = []
+  dataset.nodes.forEach((val) => {
+    strs.push(val.name)
+  })
+  nodeText.selectAll("tspan")
+    .data(function(d){
+      let nameStr = []
+      if(d.name.length>11){
+        nameStr[0] = d.name.slice(0,5).toString();
+        nameStr[1] = d.name.slice(5,10).toString() + "...";
+        return nameStr;
+      }else {
+        nameStr[0] = d.name.slice(0,5).toString();
+        nameStr[1] = d.name.slice(5,).toString();
+        return nameStr;
+      }})
+    .enter()
+    .append("tspan")
+    .attr("x",nodeText.attr('x'))
+    .attr("dy","1.3em")
+    .text(d => d);
   // node.append("text")
   //   .attr("dy", 12)
   //   .attr("dx", -8)
@@ -254,13 +341,11 @@ export function pltKg(datases) {
   }
 
   //the targeted node is released when the gesture ends
-  //   function dragended(d) {
-  //     if (!d3.event.active) simulation.alphaTarget(0);
-  //     d.fx = null;
-  //     d.fy = null;
-
-  //     console.log("dataset after dragged is ...",dataset);
-  //   }
+    function dragended(d) {
+      if (!d3.event.active) simulation.alphaTarget(0);
+      d.fx = d3.event.x;
+      d.fy = d3.event.y;
+    }
 
   //drawing the legend
   const legend_g = container.append("svg").selectAll(".legend")
@@ -312,25 +397,29 @@ export function pltKg(datases) {
   //圆环数据
   const nodeData = {
     "name": "TOPICS", "children": [{
-      "name": "TopicC", "icon": "\ue62a",
-      "children": [{ "name": "Sub C1", "icon": "全部", "size": 3 }, { "name": "Sub C2", "icon": "条件", "size": 3 }]
+      "name": "TopicC", "icon": "\ue62a", "iconName": "拓展节点",
+      "children": [{ "name": "Sub C1", "icon": "全部", "icon2": "拓展", "size": 3 }, { "name": "Sub C2", "icon": "条件", "icon2": "拓展", "size": 3 }]
     }, {
-      "name": "TopicD", "icon": "\ue62c",
-      "children": [{ "name": "Sub D1", "icon": "节点", "size": 3 }, { "name": "Sub D2", "icon": "链路", "size": 3 }]
-    }, {
+      "name": "TopicD", "icon": "\ue62c", "iconName": "删除节点",
+      "children": [{ "name": "Sub D1", "icon": "删除", "icon2": "节点", "size": 3 }, { "name": "Sub D2", "icon": "删除", "icon2": "链路", "size": 3 }]
+    },  {
+      "name": "TopicG", "icon": "\ue624", "size": 6, "iconName": "查看档案",
+      // "children": [{ "name": "Sub D1", "icon": "删除", "icon2": "节点", "size": 3 }, { "name": "Sub D2", "icon": "删除", "icon2": "链路", "size": 3 }]
+    },
+      {
       //锁定
-      "name": "TopicE", "icon": "\ue6a0", "size": 6,
+      "name": "TopicE", "icon": "\ue6a0", "size": 6, "iconName": "锁定节点",
       // "children": [{ "name": "Sub E1", "icon": "加载", "size": 3 }, { "name": "Sub E2", "icon": "扩展", "size": 3 }]
     }, {
-      "name": "TopicA", "size": 6, "icon": "\ue684",
+      "name": "TopicA", "size": 6, "icon": "\ue684", "iconName": "解锁节点",
       // "children": [{"name": "Sub A1", "size": 4}, {"name": "Sub A2", "size": 4}]
     }, {
-      "name": "TopicF", "size": 6, "icon": "\ue621",
+      "name": "TopicF", "size": 6, "icon": "\ue621", "iconName": "取消蒙版",
       // "children": [{"name": "Sub A1", "size": 4}, {"name": "Sub A2", "size": 4}]
     }, {
-      "name": "TopicB", "icon": "\ue64c",
-      "children": [{ "name": "Sub B1", "icon": "普通", "size": 2 }, { "name": "Sub B2", "icon": "直连", "size": 2 }, {
-        "name": "Sub B3", "icon": "链路", "size": 2
+      "name": "TopicB", "icon": "\ue64c", "iconName": "查看模式",
+      "children": [{ "name": "Sub B1", "icon": "普通", "icon2": "查看","size": 2 }, { "name": "Sub B2", "icon": "查看", "icon2": "直连", "size": 2 }, {
+        "name": "Sub B3", "icon": "查看", "icon2": "链路", "size": 2
       }]
     }
     ]
@@ -341,7 +430,7 @@ export function pltKg(datases) {
     // Variables
     var width1 = 250;
     var height1 = 250;
-    var radius = Math.min(width1, height1) / 2;
+    var radius = 150;
     // var color = d3.scaleOrdinal(d3.schemeCategory20b);
 
     // Create primary <g> element
@@ -356,6 +445,18 @@ export function pltKg(datases) {
     // Find data root
     var root = d3.hierarchy(nodeData)
       .sum(function (d) { return d.size });
+
+    // g.append("circle")
+    //   .attr("r", 100)
+    //   .attr("cx", nd.x)
+    //   .attr("cy", nd.y)
+    //   .style("stroke","blue")
+    //
+    // g.append("circle")
+    //   .attr("r", 150)
+    //   .attr("cx", nd.x)
+    //   .attr("cy", nd.y)
+    //   .style("stroke","blue")
 
     // Size arcs
     partition(root);
@@ -380,6 +481,8 @@ export function pltKg(datases) {
       .attr("class", function (d) {
         return d.depth == 2 ? "hiddenUp" : null;
       })
+      .style("opacity", function (d) {
+        return d.depth == 2 ? 0.7 : 1;})
       .style("cursor", "pointer")
       .on("mouseenter", function (d) {
         d3.select(this).style("fill", function (d) {
@@ -414,20 +517,20 @@ export function pltKg(datases) {
         }
       })
 
-    path.on("mouseout", function (d) {
-      var array = printPosition();
-      var distance = Math.sqrt(Math.pow((nd.x - array[0]), 2) + Math.pow((nd.y - array[1]), 2));
-      if (d.data.name == "TopicA" || d.data.name == "TopicE" || d.data.name == "TopicF") {
-        if (distance > radius / 2) {
-          d3.select("#eee").remove(); // 删除节点扇形
-        }
-      } else {
-        if (distance > radius) {
-          d3.select("#eee").remove(); // 删除节点扇形
-        }
-      }
-
-    });
+    g.on("mouseleave", d => d3.select("#eee").remove())
+    // path.on("mouseout", function (d) {
+    //   var array = printPosition();
+    //   var distance = Math.sqrt(Math.pow((nd.x - array[0]), 2) + Math.pow((nd.y - array[1]), 2));
+    //   if (d.data.name == "TopicA" || d.data.name == "TopicE" || d.data.name == "TopicF") {
+    //     if (distance > radius / 2) {
+    //       d3.select("#eee").remove(); // 删除节点扇形
+    //     }
+    //   } else {
+    //     if (distance > radius) {
+    //       d3.select("#eee").remove(); // 删除节点扇形
+    //     }
+    //   }
+    // });
 
     path.on("click", function (d) {
       switch (d.data.name) {
@@ -454,6 +557,11 @@ export function pltKg(datases) {
           unfocus();
           d3.select("#eee").remove();
           console.log("您点击的是TopicA按钮");
+          break;
+        case "TopicG":
+          unfocus();
+          d3.select("#eee").remove();
+          console.log("您点击的是TopicG按钮");
           break;
         case "Sub B1":
           showModel = 0;
@@ -499,7 +607,7 @@ export function pltKg(datases) {
       }
     })
 
-    const iconsLab = g.append("g")
+    let iconsLab = g.append("g")
       .selectAll("text")
       .data(root.descendants())
       .join("text")
@@ -507,19 +615,30 @@ export function pltKg(datases) {
       .attr("transform", function (d) {
         const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
         const y = (d.y0 + d.y1) / 2;
-        return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 90 : 90})`;
+        return `rotate(${x - 90}) translate(${y},0) rotate(${90-x})`;
       })
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')
       .attr('class', d => d.depth > 0 ? (d.depth == 1 ? 'iconfont' : "hidUp") : null)
       .attr("display", d => d.depth > 0 ? (d.depth == 1 ? null : "none") : null)
-      .attr('style', "color:#ff00ff;")
+      // .attr('style', "color:#ff00ff;")
       .attr('font-size', '10px')
       .style("cursor", "pointer")
-      .text(d => d.depth > 0 ? d.data.icon : null)
+      .text(d => d.depth >0 ? d.data.icon : null);
 
-    iconsLab
-      .on("mouseenter", function (d) {
+    iconsLab.append("tspan")
+      .attr("x",0)
+      .attr("dy","1.3em")
+      .attr('font-size', '10px')
+      .text(d => d.data.iconName)
+
+    iconsLab.append("tspan")
+      .attr("x",0)
+      .attr("dy","1.3em")
+      .attr('font-size', '10px')
+      .text(d => d.data.icon2)
+
+    iconsLab.on("mouseenter", function (d) {
         const dd = d
         path.filter(d => dd == d).style("fill", function (d) { return d.depth == 1 ? "#F0F6F0" : "#45A5B0"; })
       })
@@ -530,7 +649,6 @@ export function pltKg(datases) {
             return d.depth == 1 ? "#F0F6FE" : "#45A5EF";
           })
       })
-
 
     iconsLab.on("click", function (d) {
       switch (d.data.name) {
@@ -557,6 +675,11 @@ export function pltKg(datases) {
           unfocus();
           d3.select("#eee").remove();
           console.log("您点击的是TopicA按钮");
+          break;
+        case "TopicG":
+          unfocus();
+          d3.select("#eee").remove();
+          console.log("您点击的是TopicG按钮");
           break;
         case "Sub B1":
           showModel = 0;
@@ -608,6 +731,7 @@ export function pltKg(datases) {
     var position = d3.mouse(svg.node());
     return position;
   }
+
 
   function stopForce() {
     for (var i = 0; i < node.length; i++) {
@@ -818,7 +942,6 @@ export function pltKg(datases) {
   d3.select("#deleteG").on("click", function () {
     dataset.nodes = null
     dataset.links = null
-    console.log(dataset)
     d3.select("svg").remove()
   })
 
@@ -834,7 +957,7 @@ export function pltKg(datases) {
   // 判断元素是否在ARRAY中
   function EdgeIsInArray(arr, value) {
     for (var i = 0; i < arr.length; i++) {
-      if ((value.source_name === arr[i].target_name) && (value.target_name === arr[i].source_name)) {
+      if ((value.source === arr[i].target) && (value.target === arr[i].source)) {
         return true;
       }
     }
@@ -842,7 +965,7 @@ export function pltKg(datases) {
   }
   //拓展
   function myExtendNode(name) {
-    axios.get('http://localhost:8023/MapDisplay/subGraph?nodeName=' + name)
+    axios.get('http://192.168.191.3:8023/MapDisplay/subGraph?nodeName=' + name)
       .then(res=>{
         let comData = res.data
         var arrEdges = [], arrNodes = [];
@@ -873,14 +996,10 @@ export function pltKg(datases) {
           }
         }
 
-        console.log("***********")
-        console.log(datases)
-        var exdataset = {nodes: datases.nodes.concat(arrNodes),links: datases.links.concat(arrEdges)}
+        dataset = {nodes: datases.nodes.concat(arrNodes),links: datases.links.concat(arrEdges)}
 
-        console.log("++++++++++++++++")
-        console.log(exdataset)
         d3.selectAll("svg").remove();
-        pltKg(exdataset)
+        pltKg(dataset)
         }
       )
   }
@@ -888,6 +1007,7 @@ export function pltKg(datases) {
 }
 export function magLens(ob) {
   if (ob) {
+    // if (!d3.event.active) simulation.alphaTarget(0.3).restart();//sets the current target alpha to the specified number in the range [0,1].
     var fisheye = lens().circular()
       .radius(100)
       .distortion(5);
@@ -901,8 +1021,7 @@ export function magLens(ob) {
       .attr("fill", "none")
 
     //鼠标进入
-    window.container.on("mousemove", function () {
-      simulation.stop();
+    window.svg.on("mousemove", function () {
       fisheye.focus(d3.mouse(this));
 
       var mouseX = d3.mouse(this)[0];
@@ -925,7 +1044,7 @@ export function magLens(ob) {
           return d.fisheye.y - d.y;
         })
         .attr("r", function (d) {
-          return d.fisheye.z * 20;
+          return d.fisheye.z * 30;
         });
 
       window.nodeText
@@ -959,8 +1078,21 @@ export function magLens(ob) {
         });
     });
   } else {
+    // if (!d3.event.active) simulation.alphaTarget(0);
     d3.select(".glass").remove()
-    window.container.on("mousemove", null)
+    window.svg.on("mousemove", null)
+    // window.nodeCicles
+    // // .attr("transform", d => `translate(${d.fisheye.x - d.x},${d.fisheye.y - d.y})`)
+    //   .attr("cx", function (d) {
+    //     return d.fisheye.x - d.x;
+    //   })
+    //   .attr("cy", function (d) {
+    //     return d.fisheye.y - d.y;
+    //   })
+    //   .attr("r", function (d) {
+    //     return  30;
+    //   });
+    //
     // link.attr("x1", d => d.source.x)
     //   .attr("y1", d => d.source.y)
     //   .attr("x2", d => d.target.x)
