@@ -28,7 +28,7 @@
                 <div class="seachM" v-if="listData.length==0">暂无搜索内容</div>
                 <div class="seaShow">
                   <div class="row-sr" v-for="item of listData" :key="item.name">
-                    <div @click="nodeSearch(item.name)">
+                      <div @click="nodeSearch(item.entityvalue)">
                       <el-col :span="6">
                         <img src="@/images/u262x.png" class="img_size1" />
                       </el-col>
@@ -84,7 +84,7 @@
                   <el-button
                     type="primary"
                     icon="el-icon-search"
-                    
+
                     size="mini"
                     @click="getShortestPath"
                   >检索</el-button>
@@ -103,7 +103,7 @@
                   <el-button
                     type="primary"
                     icon="el-icon-search"
-                    
+
                     size="mini"
                     @click="nodeSearch(ent.input)"
                   >检索</el-button>
@@ -344,14 +344,14 @@ export default {
     //   window.sessionStorage.setItem('w',0)
     //   this.initSvg(this.wnode)
     //   this.hidden=!this.hidden
-     
+
     //   setTimeout(() => {
     //     var w=this.$refs.d3Width.clientWidth
     //   window.sessionStorage.setItem('w',w)
     //   update()
     //   this.initSvg(this.wnode)
     //   }, 300);
-      
+
     // },
     // rightHidden(){
     //   if(this.wnode==null){
@@ -362,7 +362,7 @@ export default {
     //   window.sessionStorage.setItem('w',0)
     //   this.initSvg(this.wnode)
     //    this.hiddenRight = !this.hiddenRight
-       
+
     //    setTimeout(() => {
     //     var w=this.$refs.d3Width.clientWidth
     //   window.sessionStorage.setItem('w',w)
@@ -524,7 +524,7 @@ export default {
     nodeSearch(keyword) {
       this.backCount = 1
       this.$ajax
-        .get(host1+'/MapDisplay/subGraph?nodeName=' + keyword)
+        .get('http://192.168.43.228:8081/neo/neoGetEntity/'+keyword)
         .then(res => {
           this.resNode = res.data.nodes
           // update()

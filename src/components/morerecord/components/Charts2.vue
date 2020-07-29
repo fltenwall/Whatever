@@ -18,7 +18,6 @@
       'v-chart': ECharts
     },
     name:'Charts2',
-    props:['recordData'],
     data () {
       this.data1  = [[5,1,4],[3,2,8],[1,1,5]];
       this.data2  = [[3,1,4],[4,3,8],[2,3,10]];
@@ -133,13 +132,11 @@
   #content{
     width: 100%;
     height: 100%;
-    /*background-color: red;*/
-    /*display: flex;*/
   }
+
   #charts{
-    flex:1;
-    height: 600px;
-    width: 100%;
-    /*background-color: red;*/
+    height: 400px;
+    width: 800px;
+    margin: 0 auto;
   }
 </style>

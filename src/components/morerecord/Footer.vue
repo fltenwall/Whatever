@@ -4,7 +4,7 @@
 <!--        <PureWord/>-->
 <!--        <PureTable/>-->
 <!--          <Graph/>-->
-      <Charts2 :recodeData="recordData" />
+      <Charts2 />
     </div>
 </template>
 
@@ -24,22 +24,15 @@
             // Graph,
             Charts2
       },
+
         name: "Footer",
-        methods:{
-          getData(){
-            console.log(this.recordData);
-          }
-        },
-        mounted() {
-          this.getData()
-        }
     }
 </script>
 
 <style scoped lang="less">
     #footer{
         width: 95%;
-        height: 650px;
+        height: 450px;
         margin: 20px auto;
         border: 1px solid #cccccc;
         font-size: 16px;

@@ -1,16 +1,21 @@
 <template>
   <div>
-    <div v-if="status">
-      <RecordSearch/>
+    <div v-show="status">
+      <RecordSearch @changeStatus="changeStatus" />
     </div>
 
-    <div v-else>
-      <Header  />
-      <Middle/>
-      <Footer v-bind:recodeData = "recordData" />
+    <div v-show="!status" id="container">
+      <Side :val="val" v-on:result="result" />
+
+      <div v-if=" label === '型号' ">
+        <div id="main">
+          <Header  />
+          <Middle />
+          <Footer />
+        </div>
+      </div>
+
     </div>
-
-
 
   </div>
 </template>
@@ -20,34 +25,44 @@
     import Middle from "./Middle";
     import Footer from "./Footer";
     import RecordSearch from "./components/RecordSearch";
+    import Side from "./components/Side";
 
     export default {
         components:{
           Header,
           Middle,
           Footer,
-          RecordSearch
+          RecordSearch,
+          Side
         },
         name: "Morerecord",
         data(){
             return {
               status:true,
+              val:'',
               recordData:{},
+              label:'',
             }
         },
         methods:{
-            getData(){
-              this.$ajax({url:'http://192.168.43.228:8081/neo/qxGetEntity/型号/aa1/'})
-                .then(response => (this.recordData = response.data))
-                .then(()=>console.log(this.recordData));
-            }
+           changeStatus(val){
+             console.log('val',val);
+             this.val = val;
+             this.status = !this.status;
+           },
+          result(val){
+            console.log('recordData',val);
+            this.recordData = val;
+            this.label = val.content.enetitylabel;
+            console.log(this.label);
+          }
         },
-        mounted() {
-          this.getData();
-        }
+
     }
 </script>
 
 <style scoped lang="less">
-
+    #container{
+        display: flex;
+    }
 </style>
