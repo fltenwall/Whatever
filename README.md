@@ -1,4 +1,4 @@
-# web
+# 基于Vue+Element UI+D3.js+Echarts的一个知识图谱前端项目
 
 ## Project setup
 ```
