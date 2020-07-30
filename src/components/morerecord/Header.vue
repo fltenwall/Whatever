@@ -1,15 +1,16 @@
 <template>
     <div id="header">
-      <Info/>
+      <Info :content="content" />
 <!--      <ReportTitle/>-->
     </div>
 </template>
 
 <script>
-    import ReportTitle from "./components/ReportTitle";
+    // import ReportTitle from "./components/ReportTitle";
     import Info from "./components/Info";
     export default {
       name: "Header",
+      props:['content'],
       components:{
         Info,
         // ReportTitle

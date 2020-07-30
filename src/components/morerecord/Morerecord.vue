@@ -9,9 +9,10 @@
 
       <div v-if=" label === '型号' ">
         <div id="main">
-          <Header  />
-          <Middle />
-          <Footer />
+<!--          <Header  />-->
+<!--          <Middle />-->
+<!--          <Footer />-->
+              <Label :recordData="recordData" />
         </div>
       </div>
 
@@ -21,19 +22,21 @@
 </template>
 
 <script>
-    import Header from "./Header";
-    import Middle from "./Middle";
-    import Footer from "./Footer";
+    // import Header from "./Header";
+    // import Middle from "./Middle";
+    // import Footer from "./Footer";
     import RecordSearch from "./components/RecordSearch";
     import Side from "./components/Side";
+    import Label from "./modules/Label";
 
     export default {
         components:{
-          Header,
-          Middle,
-          Footer,
+          // Header,
+          // Middle,
+          // Footer,
           RecordSearch,
-          Side
+          Side,
+          Label
         },
         name: "Morerecord",
         data(){

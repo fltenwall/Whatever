@@ -1,12 +1,13 @@
 <template>
     <div id="middle">
         <div id="middle-left">
-            <Table/>
+<!--            <Table/>-->
 <!--            <PureTable/>-->
+          <TableCount :fenlei="fenlei" />
         </div>
         <div id="middle-right">
-  <!--        <Table/>-->
-            <Pie/>
+          <Table :fenlei="fenlei" />
+<!--            <Pie/>-->
 <!--            <Graph/>-->
         </div>
     </div>
@@ -14,16 +15,19 @@
 
 <script>
     import Table from "./components/Table";
-    import Pie from "./components/Pie";
+    import TableCount from "./components/TableCount";
+    // import Pie from "./components/Pie";
     // import PureTable from "./components/PureTable";
     // import Graph from "./components/Graph"
     export default {
         components:{
           Table,
-          Pie,
+          TableCount,
+          // Pie,
           // PureTable,
           // Graph
         },
+        props:['fenlei'],
       name: "Middle",
 
     }

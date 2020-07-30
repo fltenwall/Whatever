@@ -1,6 +1,6 @@
 <template>
   <el-tabs v-model="activeName" @tab-click="handleClick" >
-    <el-tab-pane label="产品问题统计" name="first">
+    <el-tab-pane label="原因分类统计" name="first">
       <el-table
         :data="tableData"
         style="width: 95%;margin: 0 auto"
@@ -9,33 +9,18 @@
       >
         <el-table-column
           fixed
-          prop="date"
-          label="日期"
+          prop="id"
+          label="序号"
           width="150">
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="姓名"
+          prop="classify"
+          label="原因分类"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="province"
-          label="省份"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="city"
-          label="市区"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="地址"
-          width="300">
-        </el-table-column>
-        <el-table-column
-          prop="zip"
-          label="邮编"
+          prop="sum"
+          label="发生次数"
           width="120">
         </el-table-column>
       </el-table>
@@ -45,66 +30,31 @@
 
 <script>
     export default {
-        name: "TableCount",
+      name: "TableCount",
+      props:['fenlei'],
       data() {
         return {
-          tableData: [{
-            date: '2016-05-03',
-            name: '王小虎',
-            province: '上海',
-            city: '普陀区',
-            address: '上海市普陀区金沙江路 1518 弄',
-            zip: 200333
-          }, {
-            date: '2016-05-02',
-            name: '王小虎',
-            province: '上海',
-            city: '普陀区',
-            address: '上海市普陀区金沙江路 1518 弄',
-            zip: 200333
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            province: '上海',
-            city: '普陀区',
-            address: '上海市普陀区金沙江路 1518 弄',
-            zip: 200333
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            province: '上海',
-            city: '普陀区',
-            address: '上海市普陀区金沙江路 1518 弄',
-            zip: 200333
-          }, {
-            date: '2016-05-08',
-            name: '王小虎',
-            province: '上海',
-            city: '普陀区',
-            address: '上海市普陀区金沙江路 1518 弄',
-            zip: 200333
-          }, {
-            date: '2016-05-06',
-            name: '王小虎',
-            province: '上海',
-            city: '普陀区',
-            address: '上海市普陀区金沙江路 1518 弄',
-            zip: 200333
-          }, {
-            date: '2016-05-07',
-            name: '王小虎',
-            province: '上海',
-            city: '普陀区',
-            address: '上海市普陀区金沙江路 1518 弄',
-            zip: 200333
-          }],
+          tableData: [],
           activeName: 'first'
         }
       },
       methods:{
         handleClick:function(){
-          console.log(tab);
+          console.log(11);
+        },
+        getData(data){
+          data.forEach((item,index)=>{
+            let obj = {
+              id:index,
+              classify:item.yuanyinfenlei1,
+              sum:item.sum
+            };
+            this.tableData.push(obj);
+          });
         }
+      },
+      mounted() {
+        this.getData(this.fenlei);
       }
     }
 </script>

@@ -4,7 +4,7 @@
 <!--        <PureWord/>-->
 <!--        <PureTable/>-->
 <!--          <Graph/>-->
-      <Charts2 />
+      <Charts2 :xulie="xulie" />
     </div>
 </template>
 
@@ -16,15 +16,14 @@
 
     import Charts2 from "./components/Charts2";
     export default {
-        props:['recordData'],
+        props:['xulie'],
         components:{
             // Charts,
             // PureWord,
             // PureTable
             // Graph,
             Charts2
-      },
-
+        },
         name: "Footer",
     }
 </script>

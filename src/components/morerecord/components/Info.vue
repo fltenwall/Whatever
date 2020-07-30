@@ -5,25 +5,13 @@
       </div>
       <div id="info-right">
         <div id="info-right-title">
-          <p>质量归零报告</p>
+          <p>{{this.content.enetityvalue}}</p>
         </div>
         <div id="info-right-content">
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
-          <span>主键：xxx故障</span>
+          <span>创建时间：{{this.content.createTime}}</span>
+          <span>型号：{{this.content.enetitylabel}}</span>
+          <span>ID：{{this.content.enetityid}}</span>
+          <span>主键：{{this.content.entitykey}}</span>
         </div>
       </div>
     </div>
@@ -31,7 +19,8 @@
 
 <script>
     export default {
-        name: "Info"
+        name: "Info",
+        props:['content'],
     }
 </script>
 
@@ -57,6 +46,8 @@
   }
   #info-right-title{
     height: 20%;
+    font-weight: bold;
+    font-size: 18px;
   }
   #info-right-content{
     display: flex;
