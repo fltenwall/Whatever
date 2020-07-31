@@ -55,54 +55,6 @@
               ></el-pagination>
             </div>
           </el-tab-pane>
-          <!-- 关系检索========================================================== -->
-          <el-tab-pane label="图谱检索" name="second">
-            <div class="middel1">
-              <div class="top">
-                <div class="title1">关系检索</div>
-                <el-input
-                  style="margin-bottom:10px;"
-                  clearable
-                  size="small"
-                  v-model="relation.inputScor"
-                  placeholder="请输入实体"
-                ></el-input>
-                <el-input
-                  style="margin-bottom:10px;"
-                  clearable
-                  size="small"
-                  v-model="relation.inputTage"
-                  placeholder="请输入实体"
-                ></el-input>
-                <el-button
-                  type="primary"
-                  icon="el-icon-search"
-
-                  size="mini"
-                  @click="getShortestPath"
-                >检索</el-button>
-              </div>
-              <el-divider style="background-color:#DBECFF;"></el-divider>
-              <div class="top">
-                <div class="title1">实体检索</div>
-                <el-input
-                  style="margin-bottom:10px;"
-                  clearable
-                  size="small"
-                  v-model="ent.input"
-                  placeholder="请输入实体"
-                ></el-input>
-
-                <el-button
-                  type="primary"
-                  icon="el-icon-search"
-
-                  size="mini"
-                  @click="nodeSearch(ent.input)"
-                >检索</el-button>
-              </div>
-            </div>
-          </el-tab-pane>
         </el-tabs>
       </div>
     </div>

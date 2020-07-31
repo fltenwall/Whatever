@@ -1,7 +1,7 @@
 <template>
   <div id="content">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="用户管理" name="first">
+      <el-tab-pane label="产品时序" name="first">
         <v-chart :options="polar" id="charts"/>
       </el-tab-pane>
     </el-tabs>
@@ -30,9 +30,7 @@
 
       //x,y,size
       // this.data1  = [[5,1,4],[3,2,8],[1,1,5]];
-      // this.data2  = [[3,1,4],[4,3,8],[2,3,10]];
       this.ydata = ["试样阶段","方案阶段","研制阶段","产品阶段","其他"];
-      // this.xdata = ['2019-9','2019-10','2019-11','2019-12','2020-1','2020-2'];
       return {
         polar:{
           title: {
@@ -157,7 +155,7 @@
               symbolSize: function (val) {
                 return val[2] * 2;
               },
-              data: this.series4,
+              data: this.series5,
               animationDelay: function (idx) {
                 return idx * 5;
               }

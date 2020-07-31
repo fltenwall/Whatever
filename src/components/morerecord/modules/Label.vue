@@ -1,8 +1,8 @@
 <template>
     <div>
       <Header :content="content" />
-      <Middle :fenlei="fenlei" />
-      <Footer :xulie="xulie" />
+      <Middle :fenlei="fenlei" :content="content" />
+      <Footer :xulie="xulie" :content="content" />
     </div>
 </template>
 

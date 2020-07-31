@@ -1,7 +1,7 @@
 <template>
     <div id="info">
       <div id="info-left">
-        <img src="../../../images/u1026.png" alt="">
+        <img :src='imgUrl' alt="">
       </div>
       <div id="info-right">
         <div id="info-right-title">
@@ -18,9 +18,41 @@
 </template>
 
 <script>
+    // import xinghao from '../../../images/u262x.png'
+    // import zhiliangwenti from '../../../images/u253.png'
     export default {
         name: "Info",
         props:['content'],
+        data(){
+            return {
+              imgUrl:require('../../../images/u262x.png'),
+              imgName:''
+          }
+        },
+
+        methods:{
+          isUrl(label){
+            switch (label) {
+              case "型号":
+                this.imgName = 'u262x.png';
+                break;
+              case "质量问题":
+                this.imgName = 'u253.png';
+                break;
+            }
+          }
+        },
+
+        //动态加班图片，此处还未实现，但是进度赶得跟记得拉屎一样，么得办法，先撂这儿吧
+        watch:{
+            imgUrl(){
+              return  require("../../../images/" + this.imgName);
+            }
+        },
+
+        mounted() {
+            this.isUrl(this.content.enetityvalue);
+        }
     }
 </script>
 

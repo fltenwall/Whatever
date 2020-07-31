@@ -7,12 +7,21 @@
     <div v-show="!status" id="container">
       <Side :val="val" v-on:result="result" />
 
-      <div v-if=" label === '型号' ">
-        <div id="main">
-<!--          <Header  />-->
-<!--          <Middle />-->
-<!--          <Footer />-->
-              <Label :recordData="recordData" />
+      <div v-if=" label === '型号' " :key="this.recordData.content.enetityid">
+        <div class="main">
+          <Label :recordData="recordData" />
+        </div>
+      </div>
+
+      <div v-else-if=" label === '质量问题' " :key="this.recordData.content.enetityid" >
+        <div class="main">
+          <Problem :recordData="recordData" />
+        </div>
+      </div>
+
+      <div v-else-if=" label === '内部单位' " :key="this.recordData.content.enetityid">
+        <div class="main">
+          <Company :recordData="recordData" />
         </div>
       </div>
 
@@ -22,21 +31,19 @@
 </template>
 
 <script>
-    // import Header from "./Header";
-    // import Middle from "./Middle";
-    // import Footer from "./Footer";
     import RecordSearch from "./components/RecordSearch";
     import Side from "./components/Side";
     import Label from "./modules/Label";
+    import Problem from "./modules/Problem";
+    import Company from "./modules/Company";
 
     export default {
         components:{
-          // Header,
-          // Middle,
-          // Footer,
+          Problem,
           RecordSearch,
           Side,
-          Label
+          Label,
+          Company
         },
         name: "Morerecord",
         data(){
@@ -45,6 +52,7 @@
               val:'',
               recordData:{},
               label:'',
+
             }
         },
         methods:{
@@ -53,14 +61,24 @@
              this.val = val;
              this.status = !this.status;
            },
-          result(val){
-            console.log('recordData',val);
-            this.recordData = val;
-            this.label = val.content.enetitylabel;
-            console.log(this.label);
+            result(val){
+              console.log('recordData',val);
+              this.recordData = val;
+              this.label = val.content.enetitylabel;
+              console.log(this.label);
+          },
+          isShow(){
+              let label = this.recordData.content.enetitylabel;
+              switch (label) {
+                case "型号":
+                  this.label1 = true;
+                  break;
+                case "质量问题":
+                  this.label2 = true;
+                  break;
+              }
           }
-        },
-
+        }
     }
 </script>
 
@@ -68,4 +86,7 @@
     #container{
         display: flex;
     }
+  .main{
+      flex: 1;
+  }
 </style>

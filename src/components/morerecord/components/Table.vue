@@ -1,4 +1,5 @@
 <template>
+  <!--本想是全部做循环，出现一点样式问题，进度催的跟死鬼一样，没时间改了，就这么智障的堆这了，代码冗余不怨老夫-->
 <!--    <el-tabs v-model="activeName" @tab-click="handleClick" v-for="item in tableData" :key="item[1].name">-->
 <!--      <el-tab-pane :label="item[0].label" :name="item[1].name">-->
 <!--        <el-table-->
@@ -43,7 +44,7 @@
           fixed
           prop="id"
           label="序号"
-          width="150">
+          width="80">
         </el-table-column>
         <el-table-column
           prop="name"
@@ -62,11 +63,9 @@
         </el-table-column>
       </el-table>
     </el-tab-pane>
-  </el-tabs>
-  <el-tabs v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane label="元器件" name="electron">
+    <el-tab-pane label="软件" name="software">
       <el-table
-        :data="this.design[2]"
+        :data="this.software[2]"
         style="width: 95%;margin: 0 auto"
         height="240"
         border
@@ -75,7 +74,97 @@
           fixed
           prop="id"
           label="序号"
-          width="150">
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="质量问题名称"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="time"
+          label="故障发生时间"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="unit"
+          label="故障部位"
+          width="120">
+        </el-table-column>
+      </el-table>
+    </el-tab-pane>
+    <el-tab-pane label="操作" name="handle">
+      <el-table
+        :data="this.handle[2]"
+        style="width: 95%;margin: 0 auto"
+        height="240"
+        border
+      >
+        <el-table-column
+          fixed
+          prop="id"
+          label="序号"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="质量问题名称"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="time"
+          label="故障发生时间"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="unit"
+          label="故障部位"
+          width="120">
+        </el-table-column>
+      </el-table>
+    </el-tab-pane>
+    <el-tab-pane label="工艺" name="art">
+      <el-table
+        :data="this.art[2]"
+        style="width: 95%;margin: 0 auto"
+        height="240"
+        border
+      >
+        <el-table-column
+          fixed
+          prop="id"
+          label="序号"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="质量问题名称"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="time"
+          label="故障发生时间"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="unit"
+          label="故障部位"
+          width="120">
+        </el-table-column>
+      </el-table>
+    </el-tab-pane>
+    <el-tab-pane label="元器件" name="electron">
+      <el-table
+        :data="this.electron[2]"
+        style="width: 95%;margin: 0 auto"
+        height="240"
+        border
+      >
+        <el-table-column
+          fixed
+          prop="id"
+          label="序号"
+          width="80">
         </el-table-column>
         <el-table-column
           prop="name"
@@ -95,6 +184,7 @@
       </el-table>
     </el-tab-pane>
   </el-tabs>
+
 </template>
 
 <script>

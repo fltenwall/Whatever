@@ -13,6 +13,8 @@
     export default {
         components:{VePie},
         name: "Pie",
+        props:['fenlei'],
+
         data () {
           this.chartSettings = {
             radius: 100,
@@ -26,15 +28,8 @@
           };
           return {
             chartData: {
-              columns: ['日期', '访问用户'],
-              rows: [
-                { '日期': '1/1', '访问用户': 1393 },
-                { '日期': '1/2', '访问用户': 3530 },
-                { '日期': '1/3', '访问用户': 2923 },
-                { '日期': '1/4', '访问用户': 1723 },
-                { '日期': '1/5', '访问用户': 3792 },
-                { '日期': '1/6', '访问用户': 4593 }
-              ]
+              columns: ['分类', '数量'],
+              rows: []
             },
             activeName: 'first'
           }
@@ -42,7 +37,19 @@
       methods: {
         handleClick(tab, event) {
           console.log(tab, event);
+        },
+        getData(data){
+          data.forEach((item)=>{
+            let obj = {
+              '分类':item.yuanyinfenlei1,
+              '数量':item.sum
+            };
+            this.chartData.rows.push(obj);
+          });
         }
+      },
+      created() {
+          this.getData(this.fenlei);
       }
     }
 </script>

@@ -11,17 +11,17 @@
           fixed
           prop="id"
           label="序号"
-          width="150">
+          width="140">
         </el-table-column>
         <el-table-column
           prop="classify"
           label="原因分类"
-          width="120">
+          width="150">
         </el-table-column>
         <el-table-column
           prop="sum"
           label="发生次数"
-          width="120">
+          width="150">
         </el-table-column>
       </el-table>
     </el-tab-pane>

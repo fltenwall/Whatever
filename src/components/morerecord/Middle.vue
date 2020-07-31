@@ -1,14 +1,23 @@
 <template>
     <div id="middle">
         <div id="middle-left">
-<!--            <Table/>-->
-<!--            <PureTable/>-->
-          <TableCount :fenlei="fenlei" />
+          <div v-show="status">
+            <TableCount :fenlei="fenlei" />
+          </div>
+
+          <div v-show="!status">
+            <RelationCount :relation="relation" />
+          </div>
         </div>
+
         <div id="middle-right">
-          <Table :fenlei="fenlei" />
-<!--            <Pie/>-->
-<!--            <Graph/>-->
+            <div v-show="status">
+              <Table :fenlei="fenlei" />
+            </div>
+
+            <div v-show="!status">
+              <Pie :fenlei="fenlei" />
+            </div>
         </div>
     </div>
 </template>
@@ -16,19 +25,32 @@
 <script>
     import Table from "./components/Table";
     import TableCount from "./components/TableCount";
-    // import Pie from "./components/Pie";
-    // import PureTable from "./components/PureTable";
-    // import Graph from "./components/Graph"
+    import RelationCount from "./components/RelationCount";
+    import Pie from "./components/Pie";
     export default {
         components:{
           Table,
           TableCount,
-          // Pie,
-          // PureTable,
-          // Graph
+          RelationCount,
+          Pie,
         },
-        props:['fenlei'],
-      name: "Middle",
+        props:['fenlei','content','relation'],
+        name: "Middle",
+        data(){
+          return{
+            status : false
+          }
+        },
+        methods:{
+          changeStatus(){
+            if(this.content.enetitylabel === '型号'){
+              this.status = !this.status;
+            }
+          }
+        },
+        mounted() {
+          this.changeStatus();
+        }
 
     }
 </script>

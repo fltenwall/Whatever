@@ -1,27 +1,14 @@
 <template>
     <div id="footer">
-<!--      <Charts/>-->
-<!--        <PureWord/>-->
-<!--        <PureTable/>-->
-<!--          <Graph/>-->
       <Charts2 :xulie="xulie" />
     </div>
 </template>
 
 <script>
-    // import Charts from "./components/Charts";
-    // import PureWord from "./components/PureWord";
-    // import PureTable from "./components/PureTable";
-    // import Graph  from "./components/Graph"
-
     import Charts2 from "./components/Charts2";
     export default {
         props:['xulie'],
         components:{
-            // Charts,
-            // PureWord,
-            // PureTable
-            // Graph,
             Charts2
         },
         name: "Footer",
